@@ -25,12 +25,13 @@ jobs:
       id: sidenav-check
       run: |
         chmod +x ./check_changes.sh
-        ./check_changes.sh
-      continue-on-error: true
-
-    - name: Determine sidenav changes result
-      id: sidenav-result
-      run: echo "has_changes=$([[ $? -eq 0 ]] && echo true || echo false)" >> $GITHUB_ENV
+        ./check_changes.sh > check_changes_output.txt
+        cat check_changes_output.txt
+        if grep -q 'Has sidenav changes: true' check_changes_output.txt; then
+          echo "has_changes=true" >> $GITHUB_ENV
+        else
+          echo "has_changes=false" >> $GITHUB_ENV
+        fi
 
     - name: Run tests if sidenav changes
       if: env.has_changes == 'true'
