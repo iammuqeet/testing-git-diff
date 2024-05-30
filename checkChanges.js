@@ -21,5 +21,10 @@ async function checkSidenavChanges() {
 }
 
 checkSidenavChanges().then((hasSidenavChanges) => {
-	console.log('Has sidenav changes:', hasSidenavChanges);
+	console.log(`Has sidenav changes: ${hasSidenavChanges}`);
+	if (hasSidenavChanges) {
+		process.exit(0); // success
+	} else {
+		process.exit(1); // failure
+	}
 });
