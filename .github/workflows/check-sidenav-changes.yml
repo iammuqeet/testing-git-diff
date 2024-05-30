@@ -28,13 +28,9 @@ jobs:
         ./check_changes.sh
       continue-on-error: true
 
-    - name: Set has_changes environment variable
-      if: failure()
-      run: echo "has_changes=false" >> $GITHUB_ENV
-
-    - name: Set has_changes environment variable
-      if: success()
-      run: echo "has_changes=true" >> $GITHUB_ENV
+    - name: Determine sidenav changes result
+      id: sidenav-result
+      run: echo "has_changes=$([[ $? -eq 0 ]] && echo true || echo false)" >> $GITHUB_ENV
 
     - name: Run tests if sidenav changes
       if: env.has_changes == 'true'
